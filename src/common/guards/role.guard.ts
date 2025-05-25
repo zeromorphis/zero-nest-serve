@@ -1,11 +1,11 @@
-/**********************************
- * @Author: Ronnie Zhang
- * @LastEditor: Ronnie Zhang
- * @LastEditTime: 2023/12/07 20:25:17
- * @Email: zclzone@outlook.com
- * Copyright © 2023 Ronnie Zhang(大脸怪) | https://isme.top
- **********************************/
-
+/*
+ * @Author: YT
+ * @Date: 2025-05-24 17:51:44
+ * @LastEditors: YT
+ * @LastEditTime: 2025-05-24 19:40:46
+ * @Description: 当时只道是寻常
+ * @FilePath: /dev/isme-nest-serve/src/common/guards/role.guard.ts
+ */
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { CustomException, ErrorCode } from '@/common/exceptions/custom.exception';

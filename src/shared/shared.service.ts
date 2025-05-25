@@ -1,59 +1,67 @@
-/**********************************
- * @Author: Ronnie Zhang
- * @LastEditor: Ronnie Zhang
- * @LastEditTime: 2023/12/07 20:29:41
- * @Email: zclzone@outlook.com
- * Copyright © 2023 Ronnie Zhang(大脸怪) | https://isme.top
- **********************************/
-
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class SharedService {
   /**
-   * 构造树型结构数据
+   * 构造树型结构数据，去除空 children 字段
    */
-  public handleTree(data: any[], id?: string, parentId?: string, children?: string) {
-    const config = {
-      id: id || 'id',
-      parentId: parentId || 'parentId',
-      childrenList: children || 'children',
-    };
+  public handleTree(data: any[], idKey = 'id', parentKey = 'parentId') {
+    const nodeMap = new Map<number, any>();
+    const tree: any[] = [];
 
-    const childrenListMap = {};
-    const nodeIds = {};
-    const tree = [];
+    // 首先把每个节点根据 id 存入 Map 中
+    data.forEach(item => {
+      // 提取 meta 信息
+      const {
+        icon,
+        title,
+        isHide,
+        isFull,
+        isAffix,
+        isKeepAlive,
+        ...rest
+      } = item;
 
-    for (const d of data) {
-      const parentId = d[config.parentId];
-      if (childrenListMap[parentId] == null) {
-        childrenListMap[parentId] = [];
+      const node = {
+        ...rest,
+        meta: {
+          icon,
+          title,
+          isHide,
+          isFull,
+          isAffix,
+          isKeepAlive,
+        },
+      };
+
+      nodeMap.set(item[idKey], node);
+    });
+
+    // 构造树结构
+    for (const [id, node] of nodeMap) {
+      const parentId = node[parentKey];
+      const parentNode = nodeMap.get(parentId);
+      if (parentNode) {
+        if (!parentNode.children) parentNode.children = [];
+        parentNode.children.push(node);
+      } else {
+        tree.push(node);
       }
-      nodeIds[d[config.id]] = d;
-      childrenListMap[parentId].push(d);
     }
 
-    for (const d of data) {
-      const parentId = d[config.parentId];
-      if (nodeIds[parentId] == null) {
-        tree.push(d);
-      }
-    }
-
-    for (const t of tree) {
-      adaptToChildrenList(t);
-    }
-
-    function adaptToChildrenList(o) {
-      if (childrenListMap[o[config.id]] !== null) {
-        o[config.childrenList] = childrenListMap[o[config.id]];
-      }
-      if (o[config.childrenList]) {
-        for (const c of o[config.childrenList]) {
-          adaptToChildrenList(c);
+    // 移除空 children 字段
+    const removeEmptyChildren = (nodes: any[]) => {
+      nodes.forEach(node => {
+        if (node.children) {
+          removeEmptyChildren(node.children);
+          if (node.children.length === 0) {
+            delete node.children;
+          }
         }
-      }
-    }
+      });
+    };
+    removeEmptyChildren(tree);
+
     return tree;
   }
 }

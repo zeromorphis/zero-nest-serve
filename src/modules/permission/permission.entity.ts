@@ -1,11 +1,11 @@
-/**********************************
- * @Author: Ronnie Zhang
- * @LastEditor: Ronnie Zhang
- * @LastEditTime: 2023/12/07 20:26:30
- * @Email: zclzone@outlook.com
- * Copyright © 2023 Ronnie Zhang(大脸怪) | https://isme.top
- **********************************/
-
+/*
+ * @Author: YT
+ * @Date: 2025-05-24 17:51:44
+ * @LastEditors: YT
+ * @LastEditTime: 2025-05-24 22:04:47
+ * @Description: 当时只道是寻常
+ * @FilePath: /dev/isme-nest-serve/src/modules/permission/permission.entity.ts
+ */
 import { Column, Entity, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Role } from '@/modules/role/role.entity';
 import { MethodType, PermissionType } from '@/types';
@@ -15,11 +15,11 @@ export class Permission {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
-  name: string;
+  @Column({ length: 50 })
+  title: string;
 
-  @Column({ unique: true, length: 50 })
-  code: string;
+  @Column({ unique: true })
+  name: string;
 
   @Column()
   type: PermissionType;
@@ -50,19 +50,19 @@ export class Permission {
   component: string;
 
   @Column({ nullable: true })
-  layout: string;
+  isKeepAlive: boolean;
 
   @Column({ nullable: true })
-  keepAlive: boolean;
+  isAffix: boolean;
+
+  @Column({ nullable: true })
+  isFull: boolean;
 
   @Column({ nullable: true })
   method: MethodType;
 
-  @Column({ nullable: true })
-  description: string;
-
   @Column({ default: true, comment: '是否展示在页面菜单' })
-  show: boolean;
+  isHide: boolean;
 
   @Column({ default: true })
   enable: boolean;

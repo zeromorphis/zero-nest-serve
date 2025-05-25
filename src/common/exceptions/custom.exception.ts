@@ -1,11 +1,11 @@
-/**********************************
- * @Author: Ronnie Zhang
- * @LastEditor: Ronnie Zhang
- * @LastEditTime: 2023/12/07 20:24:23
- * @Email: zclzone@outlook.com
- * Copyright © 2023 Ronnie Zhang(大脸怪) | https://isme.top
- **********************************/
-
+/*
+ * @Author: YT
+ * @Date: 2025-05-24 17:51:44
+ * @LastEditors: YT
+ * @LastEditTime: 2025-05-24 19:38:41
+ * @Description: 当时只道是寻常
+ * @FilePath: /dev/isme-nest-serve/src/common/exceptions/custom.exception.ts
+ */
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { ERR } from './error-code';
 import { ErrInfo } from './error-code';

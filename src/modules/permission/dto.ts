@@ -1,10 +1,11 @@
-/**********************************
- * @Author: Ronnie Zhang
- * @LastEditor: Ronnie Zhang
- * @LastEditTime: 2023/12/07 20:26:16
- * @Email: zclzone@outlook.com
- * Copyright © 2023 Ronnie Zhang(大脸怪) | https://isme.top
- **********************************/
+/*
+ * @Author: YT
+ * @Date: 2025-05-24 17:51:44
+ * @LastEditors: YT
+ * @LastEditTime: 2025-05-24 22:04:36
+ * @Description: 当时只道是寻常
+ * @FilePath: /dev/isme-nest-serve/src/modules/permission/dto.ts
+ */
 
 import { PartialType } from '@nestjs/mapped-types';
 import { Exclude } from 'class-transformer';
@@ -13,10 +14,10 @@ import { MethodType, PermissionType } from '@/types';
 
 export class CreatePermissionDto {
   @IsString()
-  name: string;
+  title: string;
 
   @IsString()
-  code: string;
+  name: string;
 
   @IsString()
   type: PermissionType;
@@ -41,33 +42,33 @@ export class CreatePermissionDto {
   @IsOptional()
   component?: string;
 
-  @IsString()
+  @IsBoolean()
   @IsOptional()
-  layout?: string;
+  isKeepAlive?: boolean;
 
   @IsBoolean()
   @IsOptional()
-  keepAlive?: boolean;
+  isAffix?: boolean;
+
+  @IsBoolean()
+  @IsOptional()
+  isFull?: boolean;
 
   @IsString()
   @IsOptional()
   method?: MethodType;
 
-  @IsString()
-  @IsOptional()
-  description?: string;
-
-  @IsNumber()
-  @IsOptional()
-  order?: number;
-
   @IsBoolean()
   @IsOptional()
-  show?: boolean;
+  isHide?: boolean;
 
   @IsBoolean()
   @IsOptional()
   enable?: boolean;
+
+  @IsNumber()
+  @IsOptional()
+  order?: number;
 }
 
 export class UpdatePermissionDto extends PartialType(CreatePermissionDto) {

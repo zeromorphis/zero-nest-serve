@@ -16,44 +16,34 @@ SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS `permission`;
 CREATE TABLE `permission`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `code` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `parentId` int(11) NULL DEFAULT NULL,
   `path` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `redirect` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `icon` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `component` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `layout` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `keepAlive` tinyint(4) NULL DEFAULT NULL,
+  `isKeepAlive` tinyint(4) NULL DEFAULT 1 COMMENT '当前路由是否缓存',
+  `isAffix` tinyint(4) NULL DEFAULT 0 COMMENT '菜单是否固定在标签页中 (首页通常是固定项)',
+  `isFull` tinyint(4) NULL DEFAULT 0 COMMENT '菜单是否全屏 (示例：数据大屏页面)',
   `method` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `show` tinyint(4) NOT NULL DEFAULT 1 COMMENT '是否展示在页面菜单',
+  `isHide` tinyint(4) NOT NULL DEFAULT 0 COMMENT '是否在菜单中隐藏 (通常列表详情页需要隐藏)',
   `enable` tinyint(4) NOT NULL DEFAULT 1,
   `order` int(11) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `IDX_30e166e8c6359970755c5727a2`(`code`) USING BTREE
+  UNIQUE INDEX `IDX_30e166e8c6359970755c5727a2`(`name`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 21 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of permission
 -- ----------------------------
-INSERT INTO `permission` VALUES (1, '资源管理', 'Resource_Mgt', 'MENU', 2, '/pms/resource', NULL, 'i-fe:list', '/src/views/pms/resource/index.vue', NULL, NULL, NULL, NULL, 1, 1, 1);
-INSERT INTO `permission` VALUES (2, '系统管理', 'SysMgt', 'MENU', NULL, NULL, NULL, 'i-fe:grid', NULL, NULL, NULL, NULL, NULL, 1, 1, 2);
-INSERT INTO `permission` VALUES (3, '角色管理', 'RoleMgt', 'MENU', 2, '/pms/role', NULL, 'i-fe:user-check', '/src/views/pms/role/index.vue', NULL, NULL, NULL, NULL, 1, 1, 2);
-INSERT INTO `permission` VALUES (4, '用户管理', 'UserMgt', 'MENU', 2, '/pms/user', NULL, 'i-fe:user', '/src/views/pms/user/index.vue', NULL, 1, NULL, NULL, 1, 1, 3);
-INSERT INTO `permission` VALUES (5, '分配用户', 'RoleUser', 'MENU', 3, '/pms/role/user/:roleId', NULL, 'i-fe:user-plus', '/src/views/pms/role/role-user.vue', 'full', NULL, NULL, NULL, 0, 1, 1);
-INSERT INTO `permission` VALUES (6, '业务示例', 'Demo', 'MENU', NULL, NULL, NULL, 'i-fe:grid', NULL, NULL, NULL, NULL, NULL, 1, 1, 1);
-INSERT INTO `permission` VALUES (7, '图片上传', 'ImgUpload', 'MENU', 6, '/demo/upload', NULL, 'i-fe:image', '/src/views/demo/upload/index.vue', '', 1, NULL, NULL, 1, 1, 2);
-INSERT INTO `permission` VALUES (8, '个人资料', 'UserProfile', 'MENU', NULL, '/profile', NULL, 'i-fe:user', '/src/views/profile/index.vue', NULL, NULL, NULL, NULL, 0, 1, 99);
-INSERT INTO `permission` VALUES (9, '基础功能', 'Base', 'MENU', NULL, '', NULL, 'i-fe:grid', NULL, '', NULL, NULL, NULL, 1, 1, 0);
-INSERT INTO `permission` VALUES (10, '基础组件', 'BaseComponents', 'MENU', 9, '/base/components', NULL, 'i-me:awesome', '/src/views/base/index.vue', NULL, NULL, NULL, NULL, 1, 1, 1);
-INSERT INTO `permission` VALUES (11, 'Unocss', 'Unocss', 'MENU', 9, '/base/unocss', NULL, 'i-me:awesome', '/src/views/base/unocss.vue', NULL, NULL, NULL, NULL, 1, 1, 2);
-INSERT INTO `permission` VALUES (12, 'KeepAlive', 'KeepAlive', 'MENU', 9, '/base/keep-alive', NULL, 'i-me:awesome', '/src/views/base/keep-alive.vue', NULL, 1, NULL, NULL, 1, 1, 3);
-INSERT INTO `permission` VALUES (13, '创建新用户', 'AddUser', 'BUTTON', 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1);
-INSERT INTO `permission` VALUES (14, '图标 Icon', 'Icon', 'MENU', 9, '/base/icon', NULL, 'i-fe:feather', '/src/views/base/unocss-icon.vue', '', NULL, NULL, NULL, 1, 1, 0);
-INSERT INTO `permission` VALUES (15, 'MeModal', 'TestModal', 'MENU', 9, '/testModal', NULL, 'i-me:dialog', '/src/views/base/test-modal.vue', NULL, NULL, NULL, NULL, 1, 1, 5);
-INSERT INTO `permission` VALUES (16, '超管专属', 'SuperAdmin', 'BUTTON', 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1);
+INSERT INTO `permission` VALUES (1, '首页', 'home', 'MENU', NULL, '/home/index', NULL, 'HomeFilled', "/home/index", 1, 1, 0, NULL, 0, 1, 1);
+INSERT INTO `permission` VALUES (2, '数据大屏', 'dataScreen','MENU', NULL, '/dataScreen', NULL, 'Histogram', "/dataScreen/index", 1, 0, 1, NULL, 0, 1, 1);
+INSERT INTO `permission` VALUES (3, '系统管理', 'system', 'MENU', NULL, '/system', '/system/accountManage', 'Tools', NULL, 1, 0, 0, NULL, 0, 1, 2);
+INSERT INTO `permission` VALUES (4, '账号管理', 'accountManage', 'MENU', 3, '/system/accountManage', NULL, 'Menu', "/system/accountManage/index", 1, 0, 0, NULL, 0, 1, 3);
+INSERT INTO `permission` VALUES (5, '角色管理', 'roleManage', 'MENU', 3, '/system/roleManage', NULL, 'Menu', "/system/roleManage/index", 1, 0, 0, NULL, 0, 1, 2);
+INSERT INTO `permission` VALUES (6, '菜单管理', 'menuMange', 'MENU', 3, '/system/menuMange', NULL, 'Menu', "/system/menuMange/index", 1, 0, 0, NULL, 0, 1, 1);
 
 -- ----------------------------
 -- Table structure for profile
@@ -82,11 +72,11 @@ INSERT INTO `profile` VALUES (1, NULL, 'https://wpimg.wallstcn.com/f778738c-e4f8
 DROP TABLE IF EXISTS `role`;
 CREATE TABLE `role`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `code` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `title` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `enable` tinyint(4) NOT NULL DEFAULT 1,
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `IDX_ee999bb389d7ac0fd967172c41`(`code`) USING BTREE,
+  UNIQUE INDEX `IDX_ee999bb389d7ac0fd967172c41`(`title`) USING BTREE,
   UNIQUE INDEX `IDX_ae4578dcaed5adff96595e6166`(`name`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
@@ -113,15 +103,6 @@ CREATE TABLE `role_permissions_permission`  (
 -- ----------------------------
 INSERT INTO `role_permissions_permission` VALUES (2, 1);
 INSERT INTO `role_permissions_permission` VALUES (2, 2);
-INSERT INTO `role_permissions_permission` VALUES (2, 3);
-INSERT INTO `role_permissions_permission` VALUES (2, 4);
-INSERT INTO `role_permissions_permission` VALUES (2, 5);
-INSERT INTO `role_permissions_permission` VALUES (2, 9);
-INSERT INTO `role_permissions_permission` VALUES (2, 10);
-INSERT INTO `role_permissions_permission` VALUES (2, 11);
-INSERT INTO `role_permissions_permission` VALUES (2, 12);
-INSERT INTO `role_permissions_permission` VALUES (2, 14);
-INSERT INTO `role_permissions_permission` VALUES (2, 15);
 
 -- ----------------------------
 -- Table structure for user
